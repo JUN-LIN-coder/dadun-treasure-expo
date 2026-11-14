@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 大墩珍寶礦物展｜Taichung Dadun Jewelry, Gemstone and Mineral Show</title>
-    <meta property="og:title" content="2026大墩珍寶礦物展">
-    <meta property="og:description" content="展場攤位導覽與地圖資訊">
+    <title>大墩珍寶礦物展 ｜ 官方網站</title>
+    <meta name="description" content="探索卓越的礦物、珠寶與寶石藝術。大墩珍寶礦物展官方網站提供完整參展品牌導覽、展場互動地圖與即時活動資訊，免費入場。">
+    <link rel="canonical" href="https://jun-lin-coder.github.io/dadun-treasure-expo/">
+
     <meta property="og:type" content="website">
-    <link id="site-favicon" rel="icon" href="">
+    <meta property="og:url" content="https://jun-lin-coder.github.io/dadun-treasure-expo/">
+    <meta property="og:title" content="大墩珍寶礦物展 ｜ 官方網站">
+    <meta property="og:description" content="探索卓越的礦物、珠寶與寶石藝術。大墩珍寶礦物展官方網站提供完整參展品牌導覽、展場互動地圖與即時活動資訊。">
+    <meta property="og:image" content="https://jun-lin-coder.github.io/dadun-treasure-expo/assets/og-image.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://jun-lin-coder.github.io/dadun-treasure-expo/">
+    <meta name="twitter:title" content="大墩珍寶礦物展 ｜ 官方網站">
+    <meta name="twitter:description" content="探索卓越的礦物、珠寶與寶石藝術。大墩珍寶礦物展官方網站提供完整參展品牌導覽與展場互動地圖。">
+    <meta name="twitter:image" content="https://jun-lin-coder.github.io/dadun-treasure-expo/assets/og-image.jpg">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1q3XuonmUFc9ZA0LE44ABPSetKgfo1n9X">
     <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -468,7 +479,6 @@
     if (!site || typeof site !== 'object') return;
     const mapImage = document.getElementById('map-preview-img');
     const titleImage = document.getElementById('title-image');
-    const favicon = document.getElementById('site-favicon');
     if (mapImage && typeof site.mapImageUrl === 'string' && site.mapImageUrl) {
       mapImage.src = site.mapImageUrl;
     }
@@ -476,9 +486,6 @@
       titleImage.onerror = () => titleImage.classList.add('hidden');
       titleImage.onload = () => titleImage.classList.remove('hidden');
       titleImage.src = site.titleImageUrl;
-    }
-    if (favicon && typeof site.logoImageUrl === 'string' && site.logoImageUrl) {
-      favicon.href = site.logoImageUrl;
     }
   }
 
