@@ -69,6 +69,18 @@
   .section-anchor {
     scroll-margin-top: 6rem;
   }
+  .booth-card {
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+  .booth-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 35px rgba(48, 41, 30, 0.11);
+  }
+  .booth-card:focus-visible {
+    outline: 3px solid #a28751;
+    outline-offset: 3px;
+  }
   .booth-card.is-highlighted {
     border-color: #a28751;
     box-shadow: 0 0 0 3px rgba(162, 135, 81, 0.22), 0 16px 35px rgba(48, 41, 30, 0.12);
@@ -261,6 +273,38 @@
             </div>
         </footer>
 
+<div id="booth-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" role="presentation">
+  <section id="booth-modal-dialog" class="w-full max-w-lg max-h-[85vh] overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+    <header class="flex items-center justify-between gap-3 bg-market-800 px-4 py-3 text-white">
+      <button id="modal-prev-btn" type="button" class="h-9 w-9 rounded-lg hover:bg-market-700" aria-label="上一個攤位">‹</button>
+      <div class="min-w-0 flex-1 text-center">
+        <p id="modal-booth-id" class="text-xs text-white/75"></p>
+        <h2 id="modal-name" class="break-words text-base font-bold"></h2>
+      </div>
+      <div class="flex items-center gap-1">
+        <button id="modal-next-btn" type="button" class="h-9 w-9 rounded-lg hover:bg-market-700" aria-label="下一個攤位">›</button>
+        <button id="modal-close-btn" type="button" class="h-9 w-9 rounded-lg text-lg hover:bg-market-700" aria-label="關閉">×</button>
+      </div>
+    </header>
+    <div class="max-h-[calc(85vh-4rem)] space-y-4 overflow-y-auto p-4">
+      <div id="modal-categories" class="flex flex-wrap gap-1.5"></div>
+      <p id="modal-desc" class="whitespace-pre-wrap text-sm leading-relaxed text-gray-700"></p>
+      <div>
+        <h3 class="mb-2 text-sm font-bold text-[#61514a]">攤位照片</h3>
+        <div id="modal-img-container" class="grid grid-cols-2 gap-2 sm:grid-cols-3"></div>
+      </div>
+      <div id="modal-links" class="flex flex-wrap gap-2"></div>
+    </div>
+  </section>
+</div>
+<div id="image-lightbox" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/95 p-3" role="dialog" aria-modal="true" aria-label="攤位照片">
+  <button id="lightbox-close-btn" type="button" class="absolute right-4 top-4 rounded-full bg-black/70 px-4 py-2 text-sm font-bold text-white" aria-label="關閉照片">關閉</button>
+  <button id="lightbox-prev-btn" type="button" class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/70 px-4 py-2 text-2xl text-white" aria-label="上一張照片">‹</button>
+  <img id="lightbox-image" class="max-h-[85vh] max-w-[85vw] rounded-lg object-contain" alt="攤位照片">
+  <button id="lightbox-next-btn" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/70 px-4 py-2 text-2xl text-white" aria-label="下一張照片">›</button>
+  <p id="lightbox-counter" class="absolute bottom-4 rounded-full bg-black/70 px-3 py-1 text-xs text-white"></p>
+</div>
+
 <script>
   const BoothApp = (() => {
     // 集中管理畫面狀態，避免資料散落在多個全域變數。
@@ -268,7 +312,12 @@
       rawBoothsList: [],
       selectedCategory: 'ALL',
       currentBoothList: [],
-      highlightedBoothKey: ''
+      highlightedBoothKey: '',
+      currentBoothIndex: 0,
+      modalImages: [],
+      modalImageIndex: 0,
+      modalRequestId: 0,
+      previousFocus: null
     };
 
     // 集中處理 GAS 後端呼叫，讓畫面與互動邏輯不直接依賴 google.script.run。
@@ -293,6 +342,22 @@
           })
           .then(onSuccess)
           .catch(onFailure);
+      },
+
+      getBoothImages(folderId, onSuccess, onFailure) {
+        if (typeof google === 'undefined' || !google.script || !google.script.run) {
+          onFailure(new Error('目前無法連線至 Apps Script 讀取攤位照片'));
+          return;
+        }
+
+        try {
+          google.script.run
+            .withSuccessHandler(onSuccess)
+            .withFailureHandler(onFailure)
+            .getBoothImages(folderId);
+        } catch (error) {
+          onFailure(error);
+        }
       }
     };
 
@@ -451,12 +516,23 @@
       return;
     }
 
-    state.currentBoothList.forEach(booth => {
+    state.currentBoothList.forEach((booth, index) => {
       const item = document.createElement('article');
       const key = getBoothKey(booth);
       item.id = `booth-card-${key}`;
       item.dataset.boothKey = key;
+      item.tabIndex = 0;
+      item.setAttribute('aria-label', `查看 ${booth.title || '未命名參展品牌'} 詳情`);
       item.className = `booth-card bg-white rounded-2xl border p-4 sm:p-5 shadow-[0_8px_24px_rgba(48,41,30,.06)] ${state.highlightedBoothKey === key ? 'is-highlighted border-[#a28751]' : 'border-[#e5e1d7]'}`;
+      item.addEventListener('click', event => {
+        if (event.target.closest('button')) return;
+        openBoothModalByIndex(index);
+      });
+      item.addEventListener('keydown', event => {
+        if (event.target !== item || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        openBoothModalByIndex(index);
+      });
 
       const titleWrap = document.createElement('div');
       titleWrap.className = 'min-w-0 flex-1';
@@ -477,7 +553,7 @@
       titleWrap.appendChild(categories);
 
       const boothNumbers = document.createElement('div');
-      boothNumbers.className = 'flex flex-wrap justify-start gap-1.5 shrink-0 max-w-[38%]';
+      boothNumbers.className = 'w-28 shrink-0 flex flex-wrap content-start justify-start gap-1.5';
       (Array.isArray(booth.booths) ? booth.booths : []).forEach(number => {
         const badge = document.createElement('span');
         badge.className = 'text-xs font-bold text-[#5c523d] bg-[#eee9dc] px-2.5 py-1.5 rounded-lg whitespace-nowrap';
@@ -485,7 +561,7 @@
         boothNumbers.appendChild(badge);
       });
       const topRow = document.createElement('div');
-      topRow.className = 'flex items-start gap-3 sm:gap-4';
+      topRow.className = 'grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-3 sm:gap-4';
       topRow.appendChild(boothNumbers);
       topRow.appendChild(titleWrap);
       item.appendChild(topRow);
@@ -497,12 +573,197 @@
         mapButton.type = 'button';
         mapButton.className = 'text-xs font-medium text-gray-500 hover:text-market-800';
         mapButton.textContent = '地圖定位';
-        mapButton.addEventListener('click', () => focusMapLocation(booth));
+        mapButton.addEventListener('click', event => {
+          event.stopPropagation();
+          focusMapLocation(booth);
+        });
         actions.appendChild(mapButton);
         item.appendChild(actions);
       }
       container.appendChild(item);
     });
+  }
+
+  function openBoothModalByIndex(index) {
+    if (state.currentBoothList.length === 0) return;
+    state.currentBoothIndex = (index + state.currentBoothList.length) % state.currentBoothList.length;
+    const booth = state.currentBoothList[state.currentBoothIndex];
+    const modal = document.getElementById('booth-modal');
+    const imageContainer = document.getElementById('modal-img-container');
+    const requestId = ++state.modalRequestId;
+
+    if (modal.classList.contains('hidden')) {
+      state.previousFocus = document.activeElement;
+    }
+    state.modalImages = [];
+    document.getElementById('modal-booth-id').textContent = `攤位 ${formatBoothNumbers(booth)}`;
+    document.getElementById('modal-name').textContent = booth.title || '未命名參展品牌';
+    document.getElementById('modal-desc').textContent = booth.description || '暫無簡介';
+
+    const categories = document.getElementById('modal-categories');
+    categories.replaceChildren();
+    (Array.isArray(booth.categories) ? booth.categories : []).forEach(category => {
+      const tag = document.createElement('span');
+      tag.className = 'rounded-full bg-[#f1efe8] px-2.5 py-1 text-[10px] text-[#666253]';
+      tag.textContent = category;
+      categories.appendChild(tag);
+    });
+
+    imageContainer.className = 'grid grid-cols-2 gap-2 sm:grid-cols-3';
+    imageContainer.textContent = '照片載入中…';
+    renderBoothLinks(booth.promoLinks);
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.classList.add('overflow-hidden');
+    document.getElementById('modal-close-btn').focus();
+
+    const onImagesLoaded = images => {
+      if (requestId !== state.modalRequestId) return;
+      state.modalImages = Array.isArray(images)
+        ? images.filter(image => typeof image === 'string' && image.trim())
+        : [];
+      renderModalImages();
+    };
+    const onImagesFailed = error => {
+      if (requestId !== state.modalRequestId) return;
+      imageContainer.className = 'text-sm text-red-500';
+      imageContainer.textContent = `照片載入失敗：${error && error.message ? error.message : '請稍後再試'}`;
+    };
+
+    if (Array.isArray(booth.images)) {
+      onImagesLoaded(booth.images);
+    } else if (booth.folderId) {
+      api.getBoothImages(booth.folderId, onImagesLoaded, onImagesFailed);
+    } else {
+      onImagesLoaded([]);
+    }
+  }
+
+  function navigateBooth(step) {
+    openBoothModalByIndex(state.currentBoothIndex + step);
+  }
+
+  function formatBoothNumbers(booth) {
+    return (Array.isArray(booth.booths) ? booth.booths : [])
+      .map(number => `#${parseInt(number, 10)}`)
+      .join(', ');
+  }
+
+  function renderModalImages() {
+    const container = document.getElementById('modal-img-container');
+    container.replaceChildren();
+    container.className = 'grid grid-cols-2 gap-2 sm:grid-cols-3';
+
+    if (state.modalImages.length === 0) {
+      container.className = 'text-sm text-gray-400';
+      container.textContent = '目前沒有攤位照片';
+      return;
+    }
+
+    state.modalImages.forEach((url, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'overflow-hidden rounded-xl border border-market-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-market-800';
+      button.setAttribute('aria-label', `放大查看第 ${index + 1} 張照片`);
+      button.addEventListener('click', () => openLightbox(index));
+      const image = document.createElement('img');
+      image.src = `${url}=s500`;
+      image.alt = `攤位照片 ${index + 1}`;
+      image.loading = 'lazy';
+      image.className = 'h-28 w-full object-cover';
+      image.addEventListener('error', () => {
+        image.className = 'hidden';
+        button.textContent = '照片無法顯示';
+        button.classList.add('p-3', 'text-xs', 'text-gray-500');
+      }, { once: true });
+      button.appendChild(image);
+      container.appendChild(button);
+    });
+  }
+
+  function renderBoothLinks(promoLinks) {
+    const container = document.getElementById('modal-links');
+    container.replaceChildren();
+    let links = promoLinks;
+    if (typeof links === 'string') {
+      try {
+        links = JSON.parse(links);
+      } catch (error) {
+        console.error('攤位宣傳連結格式錯誤:', error);
+        links = [];
+      }
+    }
+    if (!Array.isArray(links)) return;
+
+    links.forEach(link => {
+      if (!link || typeof link !== 'object' || typeof link.url !== 'string') return;
+      let url;
+      try {
+        url = new URL(link.url);
+      } catch (error) {
+        console.warn('略過無效的攤位宣傳連結:', error);
+        return;
+      }
+      if (url.protocol !== 'https:' && url.protocol !== 'http:') return;
+
+      const linkButton = document.createElement('a');
+      linkButton.href = url.href;
+      linkButton.target = '_blank';
+      linkButton.rel = 'noopener noreferrer';
+      linkButton.className = 'rounded-full border border-market-100 bg-market-50 px-3 py-2 text-xs font-bold text-market-800 hover:bg-market-100';
+      const type = String(link.type || '').toLowerCase();
+      linkButton.textContent = type.includes('facebook') || type === 'fb'
+        ? 'Facebook'
+        : type.includes('instagram') || type === 'ig'
+          ? 'Instagram'
+          : type.includes('thread')
+            ? 'Threads'
+            : '官方網站';
+      container.appendChild(linkButton);
+    });
+  }
+
+  function closeBoothModal() {
+    const modal = document.getElementById('booth-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.classList.remove('overflow-hidden');
+    state.modalRequestId += 1;
+    closeLightbox();
+    if (state.previousFocus && typeof state.previousFocus.focus === 'function') {
+      state.previousFocus.focus();
+    }
+  }
+
+  function openLightbox(index) {
+    if (state.modalImages.length === 0) return;
+    state.modalImageIndex = (index + state.modalImages.length) % state.modalImages.length;
+    renderLightbox();
+    const lightbox = document.getElementById('image-lightbox');
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+  }
+
+  function renderLightbox() {
+    const image = document.getElementById('lightbox-image');
+    image.src = `${state.modalImages[state.modalImageIndex]}=s1600`;
+    document.getElementById('lightbox-counter').textContent =
+      `${state.modalImageIndex + 1} / ${state.modalImages.length}`;
+    const showNavigation = state.modalImages.length > 1;
+    document.getElementById('lightbox-prev-btn').classList.toggle('hidden', !showNavigation);
+    document.getElementById('lightbox-next-btn').classList.toggle('hidden', !showNavigation);
+  }
+
+  function navigateLightbox(step) {
+    if (state.modalImages.length < 2) return;
+    state.modalImageIndex = (state.modalImageIndex + step + state.modalImages.length) % state.modalImages.length;
+    renderLightbox();
+  }
+
+  function closeLightbox() {
+    const lightbox = document.getElementById('image-lightbox');
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
   }
 
   function getBoothKey(booth) {
@@ -585,6 +846,9 @@
   function init() {
     const searchInput = document.getElementById('search-input');
     const categoryContainer = document.getElementById('category-chips');
+    const modal = document.getElementById('booth-modal');
+    const modalDialog = document.getElementById('booth-modal-dialog');
+    const lightbox = document.getElementById('image-lightbox');
 
     if (searchInput) searchInput.addEventListener('input', handleFilter);
     if (categoryContainer) {
@@ -593,6 +857,31 @@
         if (button && categoryContainer.contains(button)) selectCategory(button.dataset.category);
       });
     }
+    document.getElementById('modal-close-btn').addEventListener('click', closeBoothModal);
+    document.getElementById('modal-prev-btn').addEventListener('click', () => navigateBooth(-1));
+    document.getElementById('modal-next-btn').addEventListener('click', () => navigateBooth(1));
+    modal.addEventListener('click', event => {
+      if (event.target === modal) closeBoothModal();
+    });
+    modalDialog.addEventListener('click', event => event.stopPropagation());
+
+    document.getElementById('lightbox-close-btn').addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-prev-btn').addEventListener('click', () => navigateLightbox(-1));
+    document.getElementById('lightbox-next-btn').addEventListener('click', () => navigateLightbox(1));
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.getElementById('lightbox-image').addEventListener('click', event => event.stopPropagation());
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        if (!lightbox.classList.contains('hidden')) closeLightbox();
+        else if (!modal.classList.contains('hidden')) closeBoothModal();
+        return;
+      }
+      if (lightbox.classList.contains('hidden')) return;
+      if (event.key === 'ArrowLeft') navigateLightbox(-1);
+      if (event.key === 'ArrowRight') navigateLightbox(1);
+    });
 
     fetchBoothsData();
     initBackgroundPolling();
