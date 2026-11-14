@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 大墩珍寶礦物展｜Taichung Dadun Jewelry, Gemstone and Mineral Show</title>
+    <meta property="og:title" content="2026大墩珍寶礦物展">
+    <meta property="og:description" content="展場攤位導覽與地圖資訊">
+    <meta property="og:type" content="website">
+    <link id="site-favicon" rel="icon" href="">
+    <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          market: {
+            50: '#fdfbf7',
+            100: '#f4ece1',
+            600: '#8c6d53',
+            700: '#6f533d',
+            800: '#543e2e',
+          }
+        }
+      }
+    }
+  }
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+  body {
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f1eade;
+  }
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(253, 251, 247, 0.88);
+    border-bottom: 1px solid rgba(84, 62, 46, 0.12);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .hero-section {
+    min-height: 0;
+    background-color: #4B2A17;
+  }
+  .hero-content {
+    animation: hero-entrance 800ms ease both;
+  }
+  .section-anchor {
+    scroll-margin-top: 6rem;
+  }
+  .booth-card {
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+  .booth-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 35px rgba(48, 41, 30, 0.11);
+  }
+  .booth-card.is-highlighted {
+    border-color: #a28751;
+    box-shadow: 0 0 0 3px rgba(162, 135, 81, 0.22), 0 16px 35px rgba(48, 41, 30, 0.12);
+  }
+  .map-hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    min-width: 2rem;
+    height: 2rem;
+    border: 2px solid #fff;
+    border-radius: 9999px;
+    padding: 0 .4rem;
+    background: #5c523d;
+    color: #fff;
+    font-size: .7rem;
+    font-weight: 700;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .35);
+    cursor: pointer;
+    transition: transform 160ms ease, background 160ms ease;
+  }
+  .map-hotspot:hover, .map-hotspot.is-highlighted {
+    transform: translate(-50%, -50%) scale(1.18);
+    background: #a28751;
+  }
+  @keyframes hero-entrance {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <header class="site-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 flex justify-between items-center gap-3">
+            <a href="#top" class="flex items-center gap-3 min-w-0" aria-label="回到網站首頁">
+                <span class="text-sm sm:text-base font-bold tracking-wide text-[#4a4233] whitespace-nowrap">大墩珍寶礦物展</span>
+            </a>
+            <nav class="flex items-center gap-2 sm:gap-5" aria-label="網站導覽">
+                <a href="#booths" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-market-800 whitespace-nowrap">攤位導覽</a>
+                <a href="#exhibition" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-market-800 whitespace-nowrap">展覽資訊</a>
+                <label class="sr-only" for="season-select">選擇展覽場次</label>
+                <select id="season-select" class="hidden md:block max-w-40 rounded-full border border-market-100 bg-white/70 px-3 py-2 text-xs text-gray-600" aria-label="選擇展覽場次">
+                    <option value="2026-current">2026 當前展出</option>
+                    <option value="2027-special" disabled>2027 特別場（籌備中）</option>
+                </select>
+            </nav>
+        </div>
+    </header>
+
+    <section id="top" class="hero-section relative flex items-center justify-center text-white">
+        <div class="hero-content relative w-full mx-auto px-6 py-12 sm:py-16 lg:px-8 lg:py-20 text-center">
+            <p class="uppercase tracking-[.28em] text-xs sm:text-sm text-[#e2d4b0] mb-5">Taichung · Taiwan · 2026</p>
+            <img id="title-image" src="https://lh3.googleusercontent.com/d/1MIqFAtEx3Sj3qHXhTuHJexFxzCeSh7gQ" class="mx-auto mb-5 w-[min(82vw,34rem)] sm:w-[min(72vw,42rem)] max-h-36 sm:max-h-44 object-contain drop-shadow-[0_8px_24px_rgba(0,0,0,.35)]" alt="大墩珍寶礦物展官方標誌" onerror="this.classList.add('hidden')">
+            <p class="mx-auto max-w-3xl text-sm sm:text-base text-white/90 tracking-wide">
+                2026.12.12　09:00—17:00　｜　金典酒店 11F 奧林帕斯廳
+            </p>
+            <a href="#floor-plan" class="inline-flex mt-7 items-center gap-3 rounded-full bg-[#d7c494] px-6 py-3 text-sm font-bold text-[#302d25] shadow-lg transition hover:bg-[#eadbb4]">
+                探索參展攤位 <span aria-hidden="true">↓</span>
+            </a>
+            <p class="mt-5 text-xs tracking-wide text-white/80">免費入場</p>
+        </div>
+    </section>
+
+    <main class="w-full">
+        <section id="floor-plan" class="section-anchor bg-[#f7f6f1] px-4 py-16 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
+                    <p id="map-hint" class="text-xs sm:text-sm text-gray-500">選取地圖上的攤位標記，可查看攤位資訊。</p>
+                </div>
+                <div class="relative overflow-hidden rounded-2xl border border-[#e7e2d5] bg-white p-2 sm:p-4 shadow-[0_12px_40px_rgba(48,41,30,.08)]">
+                    <div id="map-stage" class="relative min-h-64 sm:min-h-96 flex items-center justify-center bg-[#eeeee8] rounded-xl overflow-hidden">
+                        <div id="map-canvas" class="relative w-full">
+                            <img id="map-preview-img" class="block w-full h-auto object-contain" alt="大墩珍寶礦物展展場平面圖">
+                            <div id="map-hotspots" class="absolute inset-0 pointer-events-none"></div>
+                        </div>
+                        <p id="map-empty" class="absolute bottom-3 left-3 right-3 text-center text-xs text-gray-500 bg-white/90 rounded-full px-3 py-2">
+                            載入攤位資料後顯示地圖攤位標記
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="booths" class="section-anchor bg-[#efeee7] px-4 py-16 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-end mb-5">
+                    <label for="search-input" class="relative block w-full lg:max-w-sm">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-market-600 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m20 20-3-3"></path>
+                        </svg>
+                        <input type="search" id="search-input" placeholder="搜尋攤位編號或名稱（例：001、礦石）" class="w-full bg-white border border-[#e1ded4] rounded-full pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-market-600 shadow-sm">
+                    </label>
+                </div>
+                <div id="category-chips" class="flex gap-2 overflow-x-auto py-6 text-sm" aria-label="攤位分類">
+                    <button data-category="ALL" class="chip-btn px-4 py-2 rounded-full border bg-market-800 text-white border-market-800 font-medium flex-none">全部</button>
+                </div>
+                <div class="flex justify-between items-center border-b border-[#dcd9ce] pb-3 mb-5">
+                    <p id="booth-count" class="text-xs text-gray-500" aria-live="polite">載入攤位資料中</p>
+                    <a href="#floor-plan" class="text-xs font-medium text-market-700 hover:text-market-800">回到展場地圖 ↑</a>
+                </div>
+                <div id="booth-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5"></div>
+            </div>
+        </section>
+
+        <section id="exhibition" class="section-anchor bg-[#f8f7f3] px-4 py-16 sm:px-6 lg:px-8" aria-label="展覽資訊">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8">
+                    <p class="text-xs uppercase tracking-[.24em] text-[#927d50]">Visitor information</p>
+                    <h2 class="mt-2 text-2xl sm:text-3xl font-bold tracking-wide text-[#383c32]">展覽資訊</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <article class="bg-white p-4 sm:p-5 rounded-2xl border border-market-100 shadow-sm">
+                    <h2 class="mb-3 flex items-center gap-2 text-base font-bold text-market-800">
+                        <img src="https://lh3.googleusercontent.com/d/1mp2oOc01VuhfOjTt83UWIR9WYIWBv3Oa" alt="" class="h-6 w-6 shrink-0 object-contain">
+                        <span>展覽日期與時間</span>
+                    </h2>
+                    <dl class="space-y-2 text-sm text-gray-700">
+                        <div><dt class="inline font-medium text-gray-500">展覽名稱：</dt><dd class="inline">2026大墩珍寶礦物展<br><span class="text-xs text-gray-500">Taichung Dadun Jewelry, Gemstone and Mineral Show</span></dd></div>
+                        <div><dt class="inline font-medium text-gray-500">展覽日期：</dt><dd class="inline">2026年12月12日（星期六）</dd></div>
+                        <div><dt class="inline font-medium text-gray-500">開放時間：</dt><dd class="inline">09:00－17:00</dd></div>
+                    </dl>
+                </article>
+
+                <article class="bg-white p-4 sm:p-5 rounded-2xl border border-market-100 shadow-sm">
+                    <h2 class="mb-3 flex items-center gap-2 text-base font-bold text-market-800">
+                        <img src="https://lh3.googleusercontent.com/d/1Gewgi8XMes0hF6dzoF-lzcuiW4Rcj4Fn" alt="" class="h-6 w-6 shrink-0 object-contain">
+                        <span>展覽地點與交通</span>
+                    </h2>
+                    <dl class="space-y-2 text-sm text-gray-700">
+                        <div><dt class="inline font-medium text-gray-500">場館名稱：</dt><dd class="inline">金典酒店 11F 奧林帕斯廳</dd></div>
+                        <div><dt class="inline font-medium text-gray-500">地址：</dt><dd class="inline">台中市西區健行路1049號</dd></div>
+                    </dl>
+                    <a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%8F%B0%E4%B8%AD%E5%B8%82%E8%A5%BF%E5%8D%80%E5%81%A5%E8%A1%8C%E8%B7%AF1049%E8%99%9F" target="_blank" rel="noopener noreferrer" class="inline-flex mt-4 items-center justify-center rounded-xl bg-market-800 text-white text-sm font-bold px-4 py-2 hover:bg-market-700 transition-colors">
+                        開啟 Google 地圖
+                    </a>
+                </article>
+
+                <article class="bg-white p-4 sm:p-5 rounded-2xl border border-market-100 shadow-sm">
+                    <h2 class="mb-3 flex items-center gap-2 text-base font-bold text-market-800">
+                        <img src="https://lh3.googleusercontent.com/d/1W7MOOvmFoBU6FEClJR50tQvTiNpkHfO5" alt="" class="h-6 w-6 shrink-0 object-contain">
+                        <span>入場方式及注意事項</span>
+                    </h2>
+                    <dl class="space-y-2 text-sm text-gray-700">
+                        <div><dt class="inline font-medium text-gray-500">入場方式：</dt><dd class="inline">免費入場</dd></div>
+                        <div><dt class="inline font-medium text-gray-500">多元寶物：</dt><dd class="inline">珠寶 x 礦物 x 寶石 x 化石</dd></div>
+                        <div><dt class="inline font-medium text-gray-500">拍賣環節：</dt><dd class="inline">驚喜起標，遇見屬於你的專屬寶物</dd></div>
+                    </dl>
+                    <div class="mt-3 text-sm text-gray-700">
+                        <h3 class="font-medium text-gray-500 mb-1">參觀注意事項</h3>
+                        <p class="mb-2">活動場地為飯店宴會廳，請遊客遵循以下規則：</p>
+                        <ol class="list-decimal list-inside space-y-1">
+                            <li>全面禁止吸菸</li>
+                            <li>現場禁止飲食</li>
+                            <li>禁止寵物進場</li>
+                        </ol>
+                        <p class="mt-2 text-xs leading-relaxed text-gray-500">飯店為保障住客，避免有人對寵物過敏；違規者需承擔全面消毒費用。</p>
+                    </div>
+                </article>
+
+                <article class="bg-white p-4 sm:p-5 rounded-2xl border border-market-100 shadow-sm">
+                    <h2 class="mb-3 flex items-center gap-2 text-base font-bold text-market-800">
+                        <img src="https://lh3.googleusercontent.com/d/1Crp_eVagwWpVKTekzJ1YyxKW5u5eh-jD" alt="" class="h-6 w-6 shrink-0 object-contain">
+                        <span>主辦單位</span>
+                    </h2>
+                    <dl class="space-y-2 text-sm text-gray-700">
+                        <div><dt class="inline font-medium text-gray-500">主辦單位：</dt><dd class="inline">透閃石有限公司</dd></div>
+                    </dl>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <a href="https://www.facebook.com/dadun.mineralshow/photos" target="_blank" rel="noopener noreferrer" aria-label="前往大墩珍寶礦物展 Facebook" class="inline-flex items-center rounded-full bg-market-50 border border-market-100 text-market-800 text-xs font-bold px-3 py-2 hover:bg-market-100 transition-colors">Facebook</a>
+                        <a href="https://www.instagram.com/mineralshow2023?xtok=dnBweTFyeXE0ZjM5" target="_blank" rel="noopener noreferrer" aria-label="前往大墩珍寶礦物展 Instagram" class="inline-flex items-center rounded-full bg-market-50 border border-market-100 text-market-800 text-xs font-bold px-3 py-2 hover:bg-market-100 transition-colors">Instagram</a>
+                    </div>
+                </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+        <footer class="bg-[#34382f] text-white/75 px-4 py-8 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs">
+                <p>© 2026 透閃石有限公司｜大墩珍寶礦物展</p>
+                <a href="#top" class="font-medium hover:text-white">回到頁首 ↑</a>
+            </div>
+        </footer>
+
+            <!-- 【彈跳視窗 Modal】 -->
+<div id="booth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+  <div id="modal-content" class="bg-white w-full max-w-sm rounded-2xl shadow-xl overflow-hidden transform scale-95 transition-transform duration-300">
+    <div class="bg-market-800 text-white px-3 py-3 flex justify-between items-center gap-2">
+      <button id="modal-prev-btn" type="button" class="w-8 h-8 flex-none rounded hover:bg-market-700" title="上一攤" aria-label="上一攤">‹</button>
+      <span id="modal-booth-id" class="text-xs bg-market-700 px-2 py-0.5 rounded font-bold">攤位 #---</span>
+      <div class="flex items-center gap-1">
+        <button id="modal-next-btn" type="button" class="w-8 h-8 flex-none rounded hover:bg-market-700" title="下一攤" aria-label="下一攤">›</button>
+        <button id="modal-close-btn" type="button" class="text-white/80 hover:text-white text-lg font-bold px-2" aria-label="關閉">✕</button>
+      </div>
+    </div>
+    <div class="p-4 space-y-3 max-h-[75vh] overflow-y-auto">
+      <div>
+        <div class="flex justify-between items-start">
+          <h3 id="modal-name" class="text-base font-bold text-gray-900">載入中...</h3>
+        </div>
+        <div id="modal-categories" class="flex flex-wrap gap-1 mt-1"></div>
+      </div>
+      <!-- 圖片網格區 -->
+      <div id="modal-img-container" class="w-full bg-market-50 rounded-xl flex items-center justify-center border border-market-100 text-gray-400 text-xs overflow-hidden p-2">
+        🖼️ 尚無攤位照片
+      </div>
+      <div class="bg-gray-50 p-2.5 rounded-xl">
+        <p class="text-xs text-gray-500 mb-0.5 font-medium">攤位簡介：</p>
+        <p id="modal-desc" class="text-xs text-gray-700 leading-relaxed">--</p>
+      </div>
+      <div id="modal-links" class="pt-1 flex flex-wrap items-center justify-center gap-2"></div>
+    </div>
+  </div>
+</div>
+<script>
+  // 燈箱獨立管理照片清單、目前索引、內容渲染與自身互動事件。
+  const BoothLightbox = (() => {
+    let images = [];
+    let currentIndex = 0;
+    let element = null;
+
+    function render() {
+      const imageUrl = images[currentIndex];
+      element.innerHTML = `
+        <div class="relative w-full h-full flex items-center justify-center max-w-4xl max-h-[90vh] mx-auto">
+          <button type="button" data-lightbox-action="close" aria-label="關閉燈箱" class="absolute top-2 right-2 text-white bg-black/70 hover:bg-black text-xs font-bold px-3 py-1.5 rounded-full z-20 shadow-lg">✕ 關閉</button>
+          <img src="${imageUrl}=s1600" class="max-w-[85vw] max-h-[85vh] object-contain rounded-lg shadow-2xl select-none" alt="攤位照片">
+          ${images.length > 1 ? `
+            <button type="button" data-lightbox-action="previous" aria-label="上一張照片" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold z-20 shadow-lg transition-all">‹</button>
+            <button type="button" data-lightbox-action="next" aria-label="下一張照片" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold z-20 shadow-lg transition-all">›</button>
+            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 text-white text-xs bg-black/70 px-3 py-1 rounded-full z-20 shadow">
+              ${currentIndex + 1} / ${images.length}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function close() {
+      if (element) element.classList.add('hidden');
+    }
+
+    function move(step) {
+      if (images.length < 2) return;
+      currentIndex = (currentIndex + step + images.length) % images.length;
+      render();
+    }
+
+    function handleClick(event) {
+      const button = event.target.closest('[data-lightbox-action]');
+      if (button) {
+        event.stopPropagation();
+        const action = button.dataset.lightboxAction;
+        if (action === 'close') close();
+        if (action === 'previous') move(-1);
+        if (action === 'next') move(1);
+        return;
+      }
+
+      if (event.target === element) close();
+    }
+
+    function open(imageList, index) {
+      if (!Array.isArray(imageList)) return;
+      images = imageList.filter(image => typeof image === 'string' && image.trim());
+      if (images.length === 0) return;
+
+      currentIndex = Math.max(0, Math.min(Number(index) || 0, images.length - 1));
+      if (!element) {
+        element = document.createElement('div');
+        element.id = 'image-lightbox';
+        element.className = 'fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-2 cursor-pointer hidden';
+        element.addEventListener('click', handleClick);
+        document.body.appendChild(element);
+      }
+
+      render();
+      element.classList.remove('hidden');
+    }
+
+    return { open };
+  })();
+</script>
+<script>
+  const BoothApp = (() => {
+    // 集中管理畫面狀態，避免資料散落在多個全域變數。
+    const state = {
+      rawBoothsList: [],
+      selectedCategory: 'ALL',
+      currentBoothList: [],
+      currentBoothIndex: 0,
+      boothImages: [],
+      highlightedBoothKey: ''
+    };
+
+    // 集中處理 GAS 後端呼叫，讓畫面與互動邏輯不直接依賴 google.script.run。
+    const api = {
+      getBoothsData(onSuccess, onFailure) {
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          try {
+            google.script.run
+              .withSuccessHandler(onSuccess)
+              .withFailureHandler(onFailure)
+              .getBoothsData();
+          } catch (error) {
+            onFailure(error);
+          }
+          return;
+        }
+
+        fetch('./data.json', { cache: 'no-store' })
+          .then(response => {
+            if (!response.ok) throw new Error(`載入攤位資料失敗（HTTP ${response.status}）`);
+            return response.json();
+          })
+          .then(onSuccess)
+          .catch(onFailure);
+      },
+
+      getBoothImages(folderId, onSuccess, onFailure) {
+        if (typeof google === 'undefined' || !google.script || !google.script.run) {
+          onFailure(new Error('目前無法連線至 Apps Script'));
+          return;
+        }
+
+        google.script.run
+          .withSuccessHandler(onSuccess)
+          .withFailureHandler(onFailure)
+          .getBoothImages(folderId);
+      }
+    };
+
+  /**
+   * 背景靜默檢查資料異動，實現無感局部更新
+   */
+  function initBackgroundPolling() {
+    window.setInterval(() => {
+      api.getBoothsData(newData => {
+        if (!newData || !Array.isArray(newData.booths)) return;
+
+        if (JSON.stringify(newData.booths) !== JSON.stringify(state.rawBoothsList)) {
+          state.rawBoothsList = newData.booths;
+          renderSiteAssets(newData.site);
+          renderCategoryChips();
+          handleFilter();
+          console.log('⚡ 偵測到試算表異動，已完成背景局部更新');
+        }
+      }, err => {
+        console.warn('⚠️ 背景同步暫時失敗:', err && err.message ? err.message : err);
+      });
+    }, 60000);
+  }
+
+  /**
+   * 發起非同步請求取得攤位資料
+   */
+  function fetchBoothsData() {
+    let requestSettled = false;
+    const timeoutId = window.setTimeout(() => {
+      if (requestSettled) return;
+      requestSettled = true;
+      onDataError(new Error('資料載入逾時，請稍後重新整理'));
+    }, 20000);
+
+    api.getBoothsData(data => {
+      if (requestSettled) return;
+      requestSettled = true;
+      window.clearTimeout(timeoutId);
+      onDataLoaded(data);
+    }, error => {
+      if (requestSettled) return;
+      requestSettled = true;
+      window.clearTimeout(timeoutId);
+      onDataError(error);
+    });
+  }
+
+  /**
+   * 資料載入成功回呼
+   */
+  function onDataLoaded(data) {
+    // 嚴格防呆：確保 data 物件存在，避免屬性讀取崩潰
+    const safeData = data && typeof data === 'object' ? data : {};
+    if (!Array.isArray(safeData.booths)) {
+      onDataError(new Error('攤位資料格式不正確'));
+      return;
+    }
+    state.rawBoothsList = safeData.booths;
+    renderSiteAssets(safeData.site);
+
+    renderCategoryChips();
+    handleFilter(); // 初次載入時預設顯示全部攤位
+  }
+
+  function renderSiteAssets(site) {
+    if (!site || typeof site !== 'object') return;
+    const mapImage = document.getElementById('map-preview-img');
+    const titleImage = document.getElementById('title-image');
+    const favicon = document.getElementById('site-favicon');
+    if (mapImage && typeof site.mapImageUrl === 'string' && site.mapImageUrl) {
+      mapImage.src = site.mapImageUrl;
+    }
+    if (titleImage && typeof site.titleImageUrl === 'string' && site.titleImageUrl) {
+      titleImage.onerror = () => titleImage.classList.add('hidden');
+      titleImage.onload = () => titleImage.classList.remove('hidden');
+      titleImage.src = site.titleImageUrl;
+    }
+    if (favicon && typeof site.logoImageUrl === 'string' && site.logoImageUrl) {
+      favicon.href = site.logoImageUrl;
+    }
+  }
+
+  /**
+   * 資料載入失敗回呼（防止 UI 卡在載入中）
+   */
+  function onDataError(err) {
+    const list = document.getElementById('booth-list');
+    if (list) list.innerHTML = '<div class="text-center py-6 text-red-500 text-xs">資料載入失敗，請重新整理</div>';
+    console.error('Data loading error:', err && err.message ? err.message : err);
+  }
+
+  // 畫面渲染：分類與攤位清單只負責呈現，不直接呼叫 GAS API。
+  function renderCategoryChips() {
+    const container = document.getElementById('category-chips');
+    if (!container) return;
+    const categoriesSet = new Set();
+
+    state.rawBoothsList.forEach(b => {
+      if (b.categories && Array.isArray(b.categories)) {
+        b.categories.forEach(c => categoriesSet.add(c));
+      }
+    });
+
+    container.innerHTML = `<button data-category="ALL" class="chip-btn px-2.5 py-1 rounded-lg border ${state.selectedCategory === 'ALL' ? 'bg-market-800 text-white border-market-800' : 'bg-white text-gray-600 border-market-100'} font-medium flex-none text-[11px]">全部</button>`;
+
+    const preferredCategories = ['礦石', '珠寶', '定製首飾', '水晶', '彩色寶石', '鑽石', '輕珠寶', '儀器', '玉石', '翡翠'];
+    const orderedCategories = preferredCategories.filter(category => categoriesSet.has(category));
+    categoriesSet.forEach(category => {
+      if (!preferredCategories.includes(category)) orderedCategories.push(category);
+    });
+
+    orderedCategories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.dataset.category = cat;
+      btn.className = `chip-btn px-4 py-2 rounded-full border ${state.selectedCategory === cat ? 'bg-market-800 text-white border-market-800' : 'bg-white text-gray-600 border-[#e1ded4] hover:border-market-600'} font-medium flex-none`;
+      btn.textContent = cat;
+      container.appendChild(btn);
+    });
+  }
+
+  // 互動控制：分類或關鍵字變更後，重新套用條件並刷新攤位清單。
+  function selectCategory(cat) {
+    state.selectedCategory = cat;
+    renderCategoryChips();
+    handleFilter();
+  }
+
+  function handleFilter() {
+    const inputEl = document.getElementById('search-input');
+    const keyword = inputEl ? inputEl.value.toLowerCase().trim() : '';
+    const filtered = state.rawBoothsList.filter(b => {
+      const matchKeyword = (b.title && b.title.toLowerCase().includes(keyword)) || 
+                           (b.booths && b.booths.some(num => num.includes(keyword) || String(parseInt(num, 10)).includes(keyword)));
+      const matchCategory = state.selectedCategory === 'ALL' || (b.categories && b.categories.includes(state.selectedCategory));
+      return matchKeyword && matchCategory;
+    });
+    renderBoothList(filtered);
+    const count = document.getElementById('booth-count');
+    if (count) count.textContent = `顯示 ${filtered.length} / ${state.rawBoothsList.length} 個參展攤位`;
+  }
+
+  /**
+   * 渲染全部攤位列表並同步更新全域清單索引
+   */
+  function renderBoothList(list) {
+    const container = document.getElementById('booth-list');
+    if (!container) return;
+    container.innerHTML = '';
+
+    state.currentBoothList = Array.isArray(list) ? list : [];
+    renderMapHotspots();
+
+    if (state.currentBoothList.length === 0) {
+      container.innerHTML = `<div class="sm:col-span-2 xl:col-span-3 text-center py-12 text-gray-400">沒有找到相關攤位，請調整搜尋條件。</div>`;
+      return;
+    }
+
+    state.currentBoothList.forEach((booth, index) => {
+      const item = document.createElement('article');
+      const key = getBoothKey(booth);
+      item.id = `booth-card-${key}`;
+      item.dataset.boothKey = key;
+      item.tabIndex = 0;
+      item.className = `booth-card bg-white rounded-2xl border p-4 sm:p-5 shadow-[0_8px_24px_rgba(48,41,30,.06)] ${state.highlightedBoothKey === key ? 'is-highlighted border-[#a28751]' : 'border-[#e5e1d7]'}`;
+      item.addEventListener('click', event => {
+        if (!event.target.closest('button')) openBoothModalByIndex(index);
+      });
+      item.addEventListener('keydown', event => {
+        if (event.target === item && (event.key === 'Enter' || event.key === ' ')) {
+          event.preventDefault();
+          openBoothModalByIndex(index);
+        }
+      });
+
+      if (Array.isArray(booth.images) && booth.images[0]) {
+        const cover = document.createElement('div');
+        cover.className = 'h-36 sm:h-40 -mx-4 -mt-4 sm:-mx-5 sm:-mt-5 mb-4 overflow-hidden rounded-t-2xl bg-[#eeece4]';
+        const image = document.createElement('img');
+        image.src = booth.images[0];
+        image.alt = `${booth.title || '參展品牌'}展品照片`;
+        image.loading = 'lazy';
+        image.className = 'w-full h-full object-cover';
+        cover.appendChild(image);
+        item.appendChild(cover);
+      }
+
+      const titleWrap = document.createElement('div');
+      titleWrap.className = 'min-w-0 flex-1';
+      const title = document.createElement('h3');
+      title.className = 'text-sm sm:text-base font-bold tracking-wide text-[#34382f] break-words';
+      title.textContent = booth.title || '未命名參展品牌';
+      titleWrap.appendChild(title);
+      const categories = document.createElement('div');
+      categories.className = 'flex flex-wrap gap-1.5 mt-2';
+      if (Array.isArray(booth.categories)) {
+        booth.categories.forEach(category => {
+          const tag = document.createElement('span');
+          tag.className = 'text-[10px] bg-[#f1efe8] text-[#666253] px-2.5 py-1 rounded-full';
+          tag.textContent = category;
+          categories.appendChild(tag);
+        });
+      }
+      titleWrap.appendChild(categories);
+
+      const boothNumbers = document.createElement('div');
+      boothNumbers.className = 'flex flex-wrap justify-start gap-1.5 shrink-0 max-w-[38%]';
+      (Array.isArray(booth.booths) ? booth.booths : []).forEach(number => {
+        const badge = document.createElement('span');
+        badge.className = 'text-xs font-bold text-[#5c523d] bg-[#eee9dc] px-2.5 py-1.5 rounded-lg whitespace-nowrap';
+        badge.textContent = `#${parseInt(number, 10)}`;
+        boothNumbers.appendChild(badge);
+      });
+      const topRow = document.createElement('div');
+      topRow.className = 'flex items-start gap-3 sm:gap-4';
+      topRow.appendChild(boothNumbers);
+      topRow.appendChild(titleWrap);
+      item.appendChild(topRow);
+
+      const actions = document.createElement('div');
+      actions.className = 'flex items-center justify-between gap-3 border-t border-[#eeece5] mt-3 pt-3';
+      const detailButton = document.createElement('button');
+      detailButton.type = 'button';
+      detailButton.className = 'text-xs font-bold text-market-800 hover:text-market-600';
+      detailButton.textContent = '查看品牌資訊 →';
+      detailButton.addEventListener('click', () => openBoothModalByIndex(index));
+      actions.appendChild(detailButton);
+      if (booth.mapPosition && Number.isFinite(Number(booth.mapPosition.x)) && Number.isFinite(Number(booth.mapPosition.y))) {
+        const mapButton = document.createElement('button');
+        mapButton.type = 'button';
+        mapButton.className = 'text-xs font-medium text-gray-500 hover:text-market-800';
+        mapButton.textContent = '地圖定位';
+        mapButton.addEventListener('click', () => focusMapLocation(booth));
+        actions.appendChild(mapButton);
+      }
+      item.appendChild(actions);
+      container.appendChild(item);
+    });
+  }
+
+  function getBoothKey(booth) {
+    const key = booth && booth.id ? booth.id : (booth && Array.isArray(booth.booths) ? booth.booths.join('-') : 'unknown');
+    return String(key).replace(/[^a-zA-Z0-9_-]/g, '-');
+  }
+
+  function renderMapHotspots() {
+    const layer = document.getElementById('map-hotspots');
+    const emptyMessage = document.getElementById('map-empty');
+    if (!layer) return;
+    layer.innerHTML = '';
+    const positionedBooths = state.rawBoothsList.filter(booth => {
+      const position = booth.mapPosition;
+      return position && Number.isFinite(Number(position.x)) && Number.isFinite(Number(position.y)) &&
+        Number(position.x) >= 0 && Number(position.x) <= 100 &&
+        Number(position.y) >= 0 && Number(position.y) <= 100;
+    });
+    const hint = document.getElementById('map-hint');
+    if (hint) {
+      hint.textContent = positionedBooths.length
+        ? `已設定 ${positionedBooths.length} 個攤位位置，可選取標記查看對應品牌。`
+        : '';
+    }
+    if (emptyMessage) {
+      emptyMessage.classList.toggle('hidden', positionedBooths.length > 0);
+      emptyMessage.textContent = positionedBooths.length
+        ? ''
+        : '目前尚無可顯示的攤位位置。';
+    }
+    positionedBooths.forEach(booth => {
+      const hotspot = document.createElement('button');
+      const key = getBoothKey(booth);
+      hotspot.type = 'button';
+      hotspot.className = `map-hotspot pointer-events-auto ${state.highlightedBoothKey === key ? 'is-highlighted' : ''}`;
+      hotspot.dataset.boothKey = key;
+      hotspot.style.left = `${Number(booth.mapPosition.x)}%`;
+      hotspot.style.top = `${Number(booth.mapPosition.y)}%`;
+      hotspot.textContent = Array.isArray(booth.booths) ? booth.booths.map(number => `#${parseInt(number, 10)}`).join('/') : '攤位';
+      hotspot.setAttribute('aria-label', `前往攤位 ${hotspot.textContent} ${booth.title || ''}`);
+      hotspot.addEventListener('click', () => focusBoothCard(booth));
+      layer.appendChild(hotspot);
+    });
+  }
+
+  function highlightBooth(key) {
+    state.highlightedBoothKey = key;
+    document.querySelectorAll('.booth-card').forEach(card => {
+      card.classList.toggle('is-highlighted', card.dataset.boothKey === key);
+    });
+    document.querySelectorAll('.map-hotspot').forEach(hotspot => {
+      hotspot.classList.toggle('is-highlighted', hotspot.dataset.boothKey === key);
+    });
+  }
+
+  function focusBoothCard(booth) {
+    const key = getBoothKey(booth);
+    if (!state.currentBoothList.some(item => getBoothKey(item) === key)) {
+      const input = document.getElementById('search-input');
+      if (input) input.value = '';
+      state.selectedCategory = 'ALL';
+      renderCategoryChips();
+      handleFilter();
+    }
+    const card = document.getElementById(`booth-card-${key}`);
+    if (!card) return;
+    highlightBooth(key);
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function focusMapLocation(booth) {
+    const key = getBoothKey(booth);
+    const hotspot = document.querySelector(`.map-hotspot[data-booth-key="${key}"]`);
+    if (!hotspot) return;
+    highlightBooth(key);
+    document.getElementById('floor-plan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * 依據全域陣列索引開啟攤位 Modal（支援上下攤位循環切換）
+   */
+  // 攤位詳細資訊 Modal
+  function openBoothModalByIndex(index) {
+    if (state.currentBoothList.length === 0) return;
+    state.currentBoothIndex = (index + state.currentBoothList.length) % state.currentBoothList.length;
+    openBoothModalData(state.currentBoothList[state.currentBoothIndex]);
+  }
+
+  // 依目前篩選清單循環切換攤位。
+  function navigateBooth(step) {
+    if (state.currentBoothList.length === 0) return;
+    openBoothModalByIndex(state.currentBoothIndex + step);
+  }
+
+  /**
+   * 填入並開啟攤位詳細資訊 Modal
+   */
+  function openBoothModalData(booth) {
+    const boothDisplayStr = booth.booths ? booth.booths.map(b => `#${parseInt(b, 10)}`).join(', ') : '';
+
+    document.getElementById('modal-booth-id').textContent = `攤位 ${boothDisplayStr}`;
+    document.getElementById('modal-name').textContent = booth.title || '';
+    document.getElementById('modal-desc').textContent = booth.description || '暫無簡介';
+
+    const catContainer = document.getElementById('modal-categories');
+    catContainer.innerHTML = booth.categories ? booth.categories.map(c => `<span class="text-[10px] bg-market-100 text-market-800 px-2 py-0.5 rounded-md font-medium">${c}</span>`).join('') : '';
+
+    const imgContainer = document.getElementById('modal-img-container');
+    if (Array.isArray(booth.images)) {
+      renderModalImages(booth.images, imgContainer);
+    } else if (booth.folderId) {
+      imgContainer.innerHTML = `<div class="text-center py-4 text-xs text-gray-400">⏳ 圖片載入中...</div>`;
+      api.getBoothImages(booth.folderId,
+        images => { renderModalImages(images, imgContainer); },
+        () => { imgContainer.innerHTML = `<div class="text-center py-4 text-xs text-red-400">⚠️ 圖片載入失敗</div>`; }
+      );
+    } else {
+      imgContainer.innerHTML = `<div class="text-center py-4 text-xs text-gray-400">🖼️ 歡迎來現場觀看</div>`;
+    }
+
+    const linksContainer = document.getElementById('modal-links');
+    renderBoothLinks(booth.promoLinks, linksContainer);
+
+    const modal = document.getElementById('booth-modal');
+    const modalContent = document.getElementById('modal-content');
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+      modal.classList.remove('opacity-0');
+      modalContent.classList.remove('scale-95');
+      modalContent.classList.add('scale-100');
+    }, 10);
+  }
+
+  /**
+   * 渲染 Modal 內的縮圖網格
+   */
+  // 照片與 Lightbox
+  function renderModalImages(images, containerEl) {
+    state.boothImages = Array.isArray(images) ? images : [];
+    if (state.boothImages.length === 0) {
+      containerEl.innerHTML = `<div class="text-center py-4 text-xs text-gray-400">🖼️ 歡迎來現場觀看</div>`;
+      return;
+    }
+    
+    let html = `<div class="grid grid-cols-3 gap-2 w-full">`;
+    state.boothImages.forEach((url, idx) => {
+      html += `<img src="${url}=s300" data-lightbox-index="${idx}" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-95 transition-all border border-market-100" alt="攤位照 ${idx+1}">`;
+    });
+    html += `</div>`;
+    containerEl.innerHTML = html;
+  }
+
+  function closeBoothModal() {
+    const modal = document.getElementById('booth-modal');
+    const modalContent = document.getElementById('modal-content');
+    modal.classList.add('opacity-0');
+    modalContent.classList.remove('scale-100');
+    modalContent.classList.add('scale-95');
+    setTimeout(() => { modal.classList.add('hidden'); }, 300);
+  }
+
+  // 攤位宣傳連結
+  function renderBoothLinks(promoLinks, containerEl) {
+    if (!containerEl) return;
+    containerEl.innerHTML = '';
+
+    let links = promoLinks;
+    if (typeof links === 'string') {
+      try { links = JSON.parse(links); } catch (e) { links = []; }
+    }
+
+    if (!Array.isArray(links) || links.length === 0) {
+      containerEl.innerHTML = '<div class="text-xs text-gray-400 text-center py-1">暫無相關連結</div>';
+      return;
+    }
+
+    links.forEach(link => {
+      if (!link || typeof link !== 'object') return;
+      const platform = getPromoLinkPlatform(link.type);
+      const url = String(link.url || '').trim();
+      if (!url) return;
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('aria-label', `造訪${platform.label}`);
+      a.title = `造訪${platform.label}`;
+
+      if (platform.logoUrl) {
+        a.className = 'inline-flex w-10 h-10 items-center justify-center rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors';
+        const logo = document.createElement('img');
+        logo.src = platform.logoUrl;
+        logo.alt = platform.label;
+        logo.width = 28;
+        logo.height = 28;
+        logo.className = 'w-7 h-7 object-contain';
+        logo.addEventListener('error', () => {
+          a.textContent = platform.label;
+          a.className = 'inline-flex items-center justify-center rounded-xl bg-white border border-gray-200 text-xs font-bold px-3 py-2 shadow-sm hover:bg-gray-50 transition-colors';
+        }, { once: true });
+        a.appendChild(logo);
+      } else {
+        a.className = 'inline-flex w-10 h-10 items-center justify-center rounded-xl bg-white border border-gray-200 text-market-700 shadow-sm hover:bg-gray-50 transition-colors';
+        a.innerHTML = '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
+      }
+      containerEl.appendChild(a);
+    });
+  }
+
+  function getPromoLinkPlatform(type) {
+    const value = String(type || '').trim().toLowerCase();
+    if (value.includes('fb') || value.includes('facebook')) {
+      return { label: 'Facebook', logoUrl: 'https://cdn.simpleicons.org/facebook/0866FF' };
+    }
+    if (value === 'ig' || value.includes('instagram')) {
+      return { label: 'Instagram', logoUrl: 'https://cdn.simpleicons.org/instagram/E4405F' };
+    }
+    if (value.includes('thread')) {
+      return { label: 'Threads', logoUrl: 'https://cdn.simpleicons.org/threads/000000' };
+    }
+    return { label: '官方網站', logoUrl: '' };
+  }
+
+  // 初始化靜態事件並啟動首屏資料載入與背景輪詢。
+  function init() {
+    const searchInput = document.getElementById('search-input');
+    const categoryContainer = document.getElementById('category-chips');
+    const modalCloseButton = document.getElementById('modal-close-btn');
+    const previousBoothButton = document.getElementById('modal-prev-btn');
+    const nextBoothButton = document.getElementById('modal-next-btn');
+    const imageContainer = document.getElementById('modal-img-container');
+
+    if (searchInput) searchInput.addEventListener('input', handleFilter);
+    if (previousBoothButton) previousBoothButton.addEventListener('click', () => navigateBooth(-1));
+    if (nextBoothButton) nextBoothButton.addEventListener('click', () => navigateBooth(1));
+    if (categoryContainer) {
+      categoryContainer.addEventListener('click', event => {
+        const button = event.target.closest('[data-category]');
+        if (button && categoryContainer.contains(button)) selectCategory(button.dataset.category);
+      });
+    }
+    if (modalCloseButton) modalCloseButton.addEventListener('click', closeBoothModal);
+    if (imageContainer) {
+      imageContainer.addEventListener('click', event => {
+        const thumbnail = event.target.closest('[data-lightbox-index]');
+        if (!thumbnail || !imageContainer.contains(thumbnail)) return;
+        BoothLightbox.open(state.boothImages, Number(thumbnail.dataset.lightboxIndex));
+      });
+    }
+
+    fetchBoothsData();
+    initBackgroundPolling();
+  }
+
+  // 對外只提供初始化入口；狀態、API 與互動控制器全部維持私有。
+  return {
+    init
+  };
+  })();
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', BoothApp.init, { once: true });
+  } else {
+    BoothApp.init();
+  }
+</script>
+</body>
+</html>
