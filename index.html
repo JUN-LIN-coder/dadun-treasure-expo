@@ -81,30 +81,6 @@
     outline: 3px solid #a28751;
     outline-offset: 3px;
   }
-  .booth-card.is-highlighted {
-    border-color: #a28751;
-    box-shadow: 0 0 0 3px rgba(162, 135, 81, 0.22), 0 16px 35px rgba(48, 41, 30, 0.12);
-  }
-  .map-hotspot {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    min-width: 2rem;
-    height: 2rem;
-    border: 2px solid #fff;
-    border-radius: 9999px;
-    padding: 0 .4rem;
-    background: #5c523d;
-    color: #fff;
-    font-size: .7rem;
-    font-weight: 700;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, .35);
-    cursor: pointer;
-    transition: transform 160ms ease, background 160ms ease;
-  }
-  .map-hotspot:hover, .map-hotspot.is-highlighted {
-    transform: translate(-50%, -50%) scale(1.18);
-    background: #a28751;
-  }
   @keyframes hero-entrance {
     from { opacity: 0; transform: translateY(18px); }
     to { opacity: 1; transform: translateY(0); }
@@ -150,18 +126,9 @@
     <main class="w-full">
         <section id="floor-plan" class="section-anchor bg-[#f7f6f1] px-4 py-16 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto">
-                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
-                    <p id="map-hint" class="text-xs sm:text-sm text-gray-500">選取地圖上的攤位標記，可查看攤位資訊。</p>
-                </div>
                 <div class="relative overflow-hidden rounded-2xl border border-[#e7e2d5] bg-white p-2 sm:p-4 shadow-[0_12px_40px_rgba(48,41,30,.08)]">
                     <div id="map-stage" class="relative min-h-64 sm:min-h-96 flex items-center justify-center bg-[#eeeee8] rounded-xl overflow-hidden">
-                        <div id="map-canvas" class="relative w-full">
-                            <img id="map-preview-img" class="block w-full h-auto object-contain" alt="大墩珍寶礦物展展場平面圖">
-                            <div id="map-hotspots" class="absolute inset-0 pointer-events-none"></div>
-                        </div>
-                        <p id="map-empty" class="absolute bottom-3 left-3 right-3 text-center text-xs text-gray-500 bg-white/90 rounded-full px-3 py-2">
-                            載入攤位資料後顯示地圖攤位標記
-                        </p>
+                        <img id="map-preview-img" class="block w-full h-auto object-contain" alt="大墩珍寶礦物展展場平面圖">
                     </div>
                 </div>
             </div>
@@ -311,7 +278,6 @@
       rawBoothsList: [],
       selectedCategory: 'ALL',
       currentBoothList: [],
-      highlightedBoothKey: '',
       currentBoothIndex: 0,
       modalImages: [],
       modalImageIndex: 0,
@@ -508,7 +474,6 @@
     container.innerHTML = '';
 
     state.currentBoothList = Array.isArray(list) ? list : [];
-    renderMapHotspots();
 
     if (state.currentBoothList.length === 0) {
       container.innerHTML = `<div class="sm:col-span-2 xl:col-span-3 text-center py-12 text-gray-400">沒有找到相關攤位，請調整搜尋條件。</div>`;
@@ -522,7 +487,7 @@
       item.dataset.boothKey = key;
       item.tabIndex = 0;
       item.setAttribute('aria-label', `查看 ${booth.title || '未命名參展品牌'} 詳情`);
-      item.className = `booth-card bg-white rounded-2xl border p-4 sm:p-5 shadow-[0_8px_24px_rgba(48,41,30,.06)] ${state.highlightedBoothKey === key ? 'is-highlighted border-[#a28751]' : 'border-[#e5e1d7]'}`;
+      item.className = 'booth-card bg-white rounded-2xl border border-[#e5e1d7] p-4 sm:p-5 shadow-[0_8px_24px_rgba(48,41,30,.06)]';
       item.addEventListener('click', event => {
         if (event.target.closest('button')) return;
         openBoothModalByIndex(index);
@@ -552,7 +517,7 @@
       titleWrap.appendChild(categories);
 
       const boothNumbers = document.createElement('div');
-      boothNumbers.className = 'w-28 shrink-0 flex flex-col items-start gap-1.5';
+      boothNumbers.className = 'w-16 shrink-0 flex flex-col items-start gap-1.5';
       (Array.isArray(booth.booths) ? booth.booths : []).forEach(number => {
         const badge = document.createElement('span');
         badge.className = 'text-xs font-bold text-[#5c523d] bg-[#eee9dc] px-2.5 py-1.5 rounded-lg whitespace-nowrap';
@@ -560,35 +525,11 @@
         boothNumbers.appendChild(badge);
       });
       const topRow = document.createElement('div');
-      topRow.className = 'grid grid-cols-[7rem_minmax(0,1fr)] items-start gap-3 sm:gap-4';
+      topRow.className = 'grid grid-cols-[4rem_minmax(0,1fr)] items-start gap-3';
       topRow.appendChild(boothNumbers);
       topRow.appendChild(titleWrap);
       item.appendChild(topRow);
 
-      const actions = document.createElement('div');
-      actions.className = 'flex items-center justify-between gap-3 border-t border-[#eeece5] mt-3 pt-3';
-      const detailButton = document.createElement('button');
-      detailButton.type = 'button';
-      detailButton.className = 'text-xs font-bold text-market-800 hover:text-market-600';
-      detailButton.textContent = '查看品牌資訊 →';
-      detailButton.addEventListener('click', event => {
-        event.stopPropagation();
-        openBoothModalByIndex(index);
-      });
-      actions.appendChild(detailButton);
-
-      if (booth.mapPosition && Number.isFinite(Number(booth.mapPosition.x)) && Number.isFinite(Number(booth.mapPosition.y))) {
-        const mapButton = document.createElement('button');
-        mapButton.type = 'button';
-        mapButton.className = 'text-xs font-medium text-gray-500 hover:text-market-800';
-        mapButton.textContent = '地圖定位';
-        mapButton.addEventListener('click', event => {
-          event.stopPropagation();
-          focusMapLocation(booth);
-        });
-        actions.appendChild(mapButton);
-      }
-      item.appendChild(actions);
       container.appendChild(item);
     });
   }
@@ -815,77 +756,6 @@
   function getBoothKey(booth) {
     const key = booth && booth.id ? booth.id : (booth && Array.isArray(booth.booths) ? booth.booths.join('-') : 'unknown');
     return String(key).replace(/[^a-zA-Z0-9_-]/g, '-');
-  }
-
-  function renderMapHotspots() {
-    const layer = document.getElementById('map-hotspots');
-    const emptyMessage = document.getElementById('map-empty');
-    if (!layer) return;
-    layer.innerHTML = '';
-    const positionedBooths = state.rawBoothsList.filter(booth => {
-      const position = booth.mapPosition;
-      return position && Number.isFinite(Number(position.x)) && Number.isFinite(Number(position.y)) &&
-        Number(position.x) >= 0 && Number(position.x) <= 100 &&
-        Number(position.y) >= 0 && Number(position.y) <= 100;
-    });
-    const hint = document.getElementById('map-hint');
-    if (hint) {
-      hint.textContent = positionedBooths.length
-        ? `已設定 ${positionedBooths.length} 個攤位位置，可選取標記查看對應品牌。`
-        : '';
-    }
-    if (emptyMessage) {
-      emptyMessage.classList.toggle('hidden', positionedBooths.length > 0);
-      emptyMessage.textContent = positionedBooths.length
-        ? ''
-        : '目前尚無可顯示的攤位位置。';
-    }
-    positionedBooths.forEach(booth => {
-      const hotspot = document.createElement('button');
-      const key = getBoothKey(booth);
-      hotspot.type = 'button';
-      hotspot.className = `map-hotspot pointer-events-auto ${state.highlightedBoothKey === key ? 'is-highlighted' : ''}`;
-      hotspot.dataset.boothKey = key;
-      hotspot.style.left = `${Number(booth.mapPosition.x)}%`;
-      hotspot.style.top = `${Number(booth.mapPosition.y)}%`;
-      hotspot.textContent = Array.isArray(booth.booths) ? booth.booths.map(number => `#${parseInt(number, 10)}`).join('/') : '攤位';
-      hotspot.setAttribute('aria-label', `前往攤位 ${hotspot.textContent} ${booth.title || ''}`);
-      hotspot.addEventListener('click', () => focusBoothCard(booth));
-      layer.appendChild(hotspot);
-    });
-  }
-
-  function highlightBooth(key) {
-    state.highlightedBoothKey = key;
-    document.querySelectorAll('.booth-card').forEach(card => {
-      card.classList.toggle('is-highlighted', card.dataset.boothKey === key);
-    });
-    document.querySelectorAll('.map-hotspot').forEach(hotspot => {
-      hotspot.classList.toggle('is-highlighted', hotspot.dataset.boothKey === key);
-    });
-  }
-
-  function focusBoothCard(booth) {
-    const key = getBoothKey(booth);
-    if (!state.currentBoothList.some(item => getBoothKey(item) === key)) {
-      const input = document.getElementById('search-input');
-      if (input) input.value = '';
-      state.selectedCategory = 'ALL';
-      renderCategoryChips();
-      handleFilter();
-    }
-    const card = document.getElementById(`booth-card-${key}`);
-    if (!card) return;
-    highlightBooth(key);
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  function focusMapLocation(booth) {
-    const key = getBoothKey(booth);
-    const hotspot = document.querySelector(`.map-hotspot[data-booth-key="${key}"]`);
-    if (!hotspot) return;
-    highlightBooth(key);
-    document.getElementById('floor-plan').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // 初始化靜態事件並啟動首屏資料載入與背景輪詢。
