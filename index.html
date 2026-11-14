@@ -274,26 +274,25 @@
         </footer>
 
 <div id="booth-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" role="presentation">
-  <section id="booth-modal-dialog" class="w-full max-w-lg max-h-[85vh] overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-name">
-    <header class="flex items-center justify-between gap-3 bg-market-800 px-4 py-3 text-white">
-      <button id="modal-prev-btn" type="button" class="h-9 w-9 rounded-lg hover:bg-market-700" aria-label="上一個攤位">‹</button>
-      <div class="min-w-0 flex-1 text-center">
-        <p id="modal-booth-id" class="text-xs text-white/75"></p>
-        <h2 id="modal-name" class="break-words text-base font-bold"></h2>
-      </div>
+  <section id="booth-modal-dialog" class="w-full max-w-sm max-h-[85vh] overflow-hidden rounded-2xl bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+    <header class="flex items-center justify-between gap-2 bg-market-800 px-3 py-3 text-white">
+      <button id="modal-prev-btn" type="button" class="h-8 w-8 flex-none rounded hover:bg-market-700" title="上一攤" aria-label="上一攤">‹</button>
+      <span id="modal-booth-id" class="rounded bg-market-700 px-2 py-0.5 text-xs font-bold"></span>
       <div class="flex items-center gap-1">
-        <button id="modal-next-btn" type="button" class="h-9 w-9 rounded-lg hover:bg-market-700" aria-label="下一個攤位">›</button>
-        <button id="modal-close-btn" type="button" class="h-9 w-9 rounded-lg text-lg hover:bg-market-700" aria-label="關閉">×</button>
+        <button id="modal-next-btn" type="button" class="h-8 w-8 flex-none rounded hover:bg-market-700" title="下一攤" aria-label="下一攤">›</button>
+        <button id="modal-close-btn" type="button" class="px-2 text-lg font-bold text-white/80 hover:text-white" aria-label="關閉">✕</button>
       </div>
     </header>
-    <div class="max-h-[calc(85vh-4rem)] space-y-4 overflow-y-auto p-4">
-      <div id="modal-categories" class="flex flex-wrap gap-1.5"></div>
-      <p id="modal-desc" class="whitespace-pre-wrap text-sm leading-relaxed text-gray-700"></p>
+    <div class="max-h-[calc(85vh-3.5rem)] space-y-3 overflow-y-auto p-4">
       <div>
-        <h3 class="mb-2 text-sm font-bold text-[#61514a]">攤位照片</h3>
-        <div id="modal-img-container" class="grid grid-cols-2 gap-2 sm:grid-cols-3"></div>
+        <h2 id="modal-name" class="break-words text-base font-bold text-gray-900"></h2>
+        <div id="modal-categories" class="mt-1 flex flex-wrap gap-1"></div>
       </div>
-      <div id="modal-links" class="flex flex-wrap gap-2"></div>
+      <div id="modal-img-container" class="grid grid-cols-3 gap-2"></div>
+      <div class="rounded-xl bg-gray-50 p-2.5">
+        <p id="modal-desc" class="whitespace-pre-wrap text-xs leading-relaxed text-gray-700"></p>
+      </div>
+      <div id="modal-links" class="flex flex-wrap items-center justify-center gap-2"></div>
     </div>
   </section>
 </div>
@@ -553,7 +552,7 @@
       titleWrap.appendChild(categories);
 
       const boothNumbers = document.createElement('div');
-      boothNumbers.className = 'w-28 shrink-0 flex flex-wrap content-start justify-start gap-1.5';
+      boothNumbers.className = 'w-28 shrink-0 flex flex-col items-start gap-1.5';
       (Array.isArray(booth.booths) ? booth.booths : []).forEach(number => {
         const badge = document.createElement('span');
         badge.className = 'text-xs font-bold text-[#5c523d] bg-[#eee9dc] px-2.5 py-1.5 rounded-lg whitespace-nowrap';
@@ -566,9 +565,19 @@
       topRow.appendChild(titleWrap);
       item.appendChild(topRow);
 
+      const actions = document.createElement('div');
+      actions.className = 'flex items-center justify-between gap-3 border-t border-[#eeece5] mt-3 pt-3';
+      const detailButton = document.createElement('button');
+      detailButton.type = 'button';
+      detailButton.className = 'text-xs font-bold text-market-800 hover:text-market-600';
+      detailButton.textContent = '查看品牌資訊 →';
+      detailButton.addEventListener('click', event => {
+        event.stopPropagation();
+        openBoothModalByIndex(index);
+      });
+      actions.appendChild(detailButton);
+
       if (booth.mapPosition && Number.isFinite(Number(booth.mapPosition.x)) && Number.isFinite(Number(booth.mapPosition.y))) {
-        const actions = document.createElement('div');
-        actions.className = 'flex justify-end border-t border-[#eeece5] mt-3 pt-3';
         const mapButton = document.createElement('button');
         mapButton.type = 'button';
         mapButton.className = 'text-xs font-medium text-gray-500 hover:text-market-800';
@@ -578,8 +587,8 @@
           focusMapLocation(booth);
         });
         actions.appendChild(mapButton);
-        item.appendChild(actions);
       }
+      item.appendChild(actions);
       container.appendChild(item);
     });
   }
@@ -604,12 +613,12 @@
     categories.replaceChildren();
     (Array.isArray(booth.categories) ? booth.categories : []).forEach(category => {
       const tag = document.createElement('span');
-      tag.className = 'rounded-full bg-[#f1efe8] px-2.5 py-1 text-[10px] text-[#666253]';
+      tag.className = 'rounded-md bg-market-100 px-2 py-0.5 text-[10px] font-medium text-market-800';
       tag.textContent = category;
       categories.appendChild(tag);
     });
 
-    imageContainer.className = 'grid grid-cols-2 gap-2 sm:grid-cols-3';
+    imageContainer.className = 'w-full overflow-hidden rounded-xl border border-market-100 bg-market-50 p-2 text-xs text-gray-400';
     imageContainer.textContent = '照片載入中…';
     renderBoothLinks(booth.promoLinks);
     modal.classList.remove('hidden');
@@ -626,7 +635,7 @@
     };
     const onImagesFailed = error => {
       if (requestId !== state.modalRequestId) return;
-      imageContainer.className = 'text-sm text-red-500';
+      imageContainer.className = 'w-full rounded-xl border border-red-100 bg-red-50 p-3 text-xs text-red-500';
       imageContainer.textContent = `照片載入失敗：${error && error.message ? error.message : '請稍後再試'}`;
     };
 
@@ -652,33 +661,36 @@
   function renderModalImages() {
     const container = document.getElementById('modal-img-container');
     container.replaceChildren();
-    container.className = 'grid grid-cols-2 gap-2 sm:grid-cols-3';
+    container.className = 'w-full overflow-hidden rounded-xl border border-market-100 bg-market-50 p-2 text-xs text-gray-400';
 
     if (state.modalImages.length === 0) {
-      container.className = 'text-sm text-gray-400';
-      container.textContent = '目前沒有攤位照片';
+      container.classList.add('text-center');
+      container.textContent = '🖼️ 歡迎來現場觀看';
       return;
     }
 
+    const grid = document.createElement('div');
+    grid.className = 'grid w-full grid-cols-3 gap-2';
     state.modalImages.forEach((url, index) => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'overflow-hidden rounded-xl border border-market-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-market-800';
+      button.className = 'overflow-hidden rounded-lg border border-market-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-market-800';
       button.setAttribute('aria-label', `放大查看第 ${index + 1} 張照片`);
       button.addEventListener('click', () => openLightbox(index));
       const image = document.createElement('img');
-      image.src = `${url}=s500`;
+      image.src = `${url}=s300`;
       image.alt = `攤位照片 ${index + 1}`;
       image.loading = 'lazy';
-      image.className = 'h-28 w-full object-cover';
+      image.className = 'h-20 w-full object-cover transition-opacity hover:opacity-95';
       image.addEventListener('error', () => {
         image.className = 'hidden';
         button.textContent = '照片無法顯示';
         button.classList.add('p-3', 'text-xs', 'text-gray-500');
       }, { once: true });
       button.appendChild(image);
-      container.appendChild(button);
+      grid.appendChild(button);
     });
+    container.appendChild(grid);
   }
 
   function renderBoothLinks(promoLinks) {
@@ -695,6 +707,7 @@
     }
     if (!Array.isArray(links)) return;
 
+    let renderedLinkCount = 0;
     links.forEach(link => {
       if (!link || typeof link !== 'object' || typeof link.url !== 'string') return;
       let url;
@@ -710,17 +723,50 @@
       linkButton.href = url.href;
       linkButton.target = '_blank';
       linkButton.rel = 'noopener noreferrer';
-      linkButton.className = 'rounded-full border border-market-100 bg-market-50 px-3 py-2 text-xs font-bold text-market-800 hover:bg-market-100';
-      const type = String(link.type || '').toLowerCase();
-      linkButton.textContent = type.includes('facebook') || type === 'fb'
-        ? 'Facebook'
-        : type.includes('instagram') || type === 'ig'
-          ? 'Instagram'
-          : type.includes('thread')
-            ? 'Threads'
-            : '官方網站';
+      const platform = getPromoLinkPlatform(link.type);
+      linkButton.setAttribute('aria-label', `造訪${platform.label}`);
+      linkButton.title = `造訪${platform.label}`;
+
+      if (platform.logoUrl) {
+        linkButton.className = 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white shadow-sm transition-colors hover:bg-gray-50';
+        const logo = document.createElement('img');
+        logo.src = platform.logoUrl;
+        logo.alt = platform.label;
+        logo.width = 28;
+        logo.height = 28;
+        logo.className = 'h-7 w-7 object-contain';
+        logo.addEventListener('error', () => {
+          linkButton.textContent = platform.label;
+          linkButton.className = 'inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold shadow-sm hover:bg-gray-50';
+        }, { once: true });
+        linkButton.appendChild(logo);
+      } else {
+        linkButton.className = 'inline-flex items-center rounded-full border border-market-100 bg-market-50 px-3 py-2 text-xs font-bold text-market-800 hover:bg-market-100';
+        linkButton.textContent = platform.label;
+      }
       container.appendChild(linkButton);
+      renderedLinkCount += 1;
     });
+    if (renderedLinkCount === 0) {
+      const emptyMessage = document.createElement('span');
+      emptyMessage.className = 'py-1 text-center text-xs text-gray-400';
+      emptyMessage.textContent = '暫無相關連結';
+      container.appendChild(emptyMessage);
+    }
+  }
+
+  function getPromoLinkPlatform(type) {
+    const value = String(type || '').trim().toLowerCase();
+    if (value.includes('fb') || value.includes('facebook')) {
+      return { label: 'Facebook', logoUrl: 'https://cdn.simpleicons.org/facebook/0866FF' };
+    }
+    if (value === 'ig' || value.includes('instagram')) {
+      return { label: 'Instagram', logoUrl: 'https://cdn.simpleicons.org/instagram/E4405F' };
+    }
+    if (value.includes('thread')) {
+      return { label: 'Threads', logoUrl: 'https://cdn.simpleicons.org/threads/000000' };
+    }
+    return { label: '官方網站', logoUrl: '' };
   }
 
   function closeBoothModal() {
