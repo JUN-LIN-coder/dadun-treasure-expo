@@ -127,7 +127,7 @@
         <section id="floor-plan" class="section-anchor bg-[#f7f6f1] px-4 py-16 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="relative overflow-hidden rounded-2xl border border-[#e7e2d5] bg-white p-2 sm:p-4 shadow-[0_12px_40px_rgba(48,41,30,.08)]">
-                    <div id="map-stage" class="relative min-h-64 sm:min-h-96 flex items-center justify-center bg-[#eeeee8] rounded-xl overflow-hidden">
+                    <div id="map-stage" class="relative rounded-xl overflow-hidden">
                         <img id="map-preview-img" class="block w-full h-auto object-contain" alt="大墩珍寶礦物展展場平面圖">
                     </div>
                 </div>
@@ -150,7 +150,6 @@
                 </div>
                 <div class="flex justify-between items-center border-b border-[#dcd9ce] pb-3 mb-5">
                     <p id="booth-count" class="text-xs text-gray-500" aria-live="polite">載入攤位資料中</p>
-                    <a href="#floor-plan" class="text-xs font-medium text-market-700 hover:text-market-800">回到展場地圖 ↑</a>
                 </div>
                 <div id="booth-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5"></div>
             </div>
@@ -270,6 +269,12 @@
   <button id="lightbox-next-btn" type="button" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/70 px-4 py-2 text-2xl text-white" aria-label="下一張照片">›</button>
   <p id="lightbox-counter" class="absolute bottom-4 rounded-full bg-black/70 px-3 py-1 text-xs text-white"></p>
 </div>
+<a href="#floor-plan" aria-label="回到展場地圖" title="回到展場地圖" class="fixed bottom-5 right-4 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-white/65 text-[#61514a] shadow-lg backdrop-blur-sm transition hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#61514a] sm:bottom-7 sm:right-6">
+  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"></path>
+    <path d="m5 12 7-7 7 7"></path>
+  </svg>
+</a>
 
 <script>
   const BoothApp = (() => {
@@ -682,8 +687,18 @@
         }, { once: true });
         linkButton.appendChild(logo);
       } else {
-        linkButton.className = 'inline-flex items-center rounded-full border border-market-100 bg-market-50 px-3 py-2 text-xs font-bold text-market-800 hover:bg-market-100';
-        linkButton.textContent = platform.label;
+        linkButton.className = 'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-market-800 shadow-sm transition-colors hover:bg-gray-50';
+        const globe = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        globe.setAttribute('viewBox', '0 0 24 24');
+        globe.setAttribute('fill', 'none');
+        globe.setAttribute('stroke', 'currentColor');
+        globe.setAttribute('stroke-width', '1.8');
+        globe.setAttribute('stroke-linecap', 'round');
+        globe.setAttribute('stroke-linejoin', 'round');
+        globe.setAttribute('aria-hidden', 'true');
+        globe.classList.add('h-6', 'w-6');
+        globe.innerHTML = '<circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>';
+        linkButton.appendChild(globe);
       }
       container.appendChild(linkButton);
       renderedLinkCount += 1;
