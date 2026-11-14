@@ -69,13 +69,6 @@
   .section-anchor {
     scroll-margin-top: 6rem;
   }
-  .booth-card {
-    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-  }
-  .booth-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 35px rgba(48, 41, 30, 0.11);
-  }
   .booth-card.is-highlighted {
     border-color: #a28751;
     box-shadow: 0 0 0 3px rgba(162, 135, 81, 0.22), 0 16px 35px rgba(48, 41, 30, 0.12);
@@ -584,176 +577,16 @@
     document.getElementById('floor-plan').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  /**
-   * 依據全域陣列索引開啟攤位 Modal（支援上下攤位循環切換）
-   */
-  // 攤位詳細資訊 Modal
-  function openBoothModalByIndex(index) {
-    if (state.currentBoothList.length === 0) return;
-    state.currentBoothIndex = (index + state.currentBoothList.length) % state.currentBoothList.length;
-    openBoothModalData(state.currentBoothList[state.currentBoothIndex]);
-  }
-
-  // 依目前篩選清單循環切換攤位。
-  function navigateBooth(step) {
-    if (state.currentBoothList.length === 0) return;
-    openBoothModalByIndex(state.currentBoothIndex + step);
-  }
-
-  /**
-   * 填入並開啟攤位詳細資訊 Modal
-   */
-  function openBoothModalData(booth) {
-    const boothDisplayStr = booth.booths ? booth.booths.map(b => `#${parseInt(b, 10)}`).join(', ') : '';
-
-    document.getElementById('modal-booth-id').textContent = `攤位 ${boothDisplayStr}`;
-    document.getElementById('modal-name').textContent = booth.title || '';
-    document.getElementById('modal-desc').textContent = booth.description || '暫無簡介';
-
-    const catContainer = document.getElementById('modal-categories');
-    catContainer.innerHTML = booth.categories ? booth.categories.map(c => `<span class="text-[10px] bg-market-100 text-market-800 px-2 py-0.5 rounded-md font-medium">${c}</span>`).join('') : '';
-
-    const imgContainer = document.getElementById('modal-img-container');
-    if (Array.isArray(booth.images)) {
-      renderModalImages(booth.images, imgContainer);
-    } else if (booth.folderId) {
-      imgContainer.innerHTML = `<div class="text-center py-4 text-xs text-gray-400">⏳ 圖片載入中...</div>`;
-      api.getBoothImages(booth.folderId,
-        images => { renderModalImages(images, imgContainer); },
-        () => { imgContainer.innerHTML = `<div class="text-center py-4 text-xs text-red-400">⚠️ 圖片載入失敗</div>`; }
-      );
-    } else {
-      imgContainer.innerHTML = `<div class="text-center py-4 text-xs text-gray-400">🖼️ 歡迎來現場觀看</div>`;
-    }
-
-    const linksContainer = document.getElementById('modal-links');
-    renderBoothLinks(booth.promoLinks, linksContainer);
-
-    const modal = document.getElementById('booth-modal');
-    const modalContent = document.getElementById('modal-content');
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-      modal.classList.remove('opacity-0');
-      modalContent.classList.remove('scale-95');
-      modalContent.classList.add('scale-100');
-    }, 10);
-  }
-
-  /**
-   * 渲染 Modal 內的縮圖網格
-   */
-  // 照片與 Lightbox
-  function renderModalImages(images, containerEl) {
-    state.boothImages = Array.isArray(images) ? images : [];
-    if (state.boothImages.length === 0) {
-      containerEl.innerHTML = `<div class="text-center py-4 text-xs text-gray-400">🖼️ 歡迎來現場觀看</div>`;
-      return;
-    }
-    
-    let html = `<div class="grid grid-cols-3 gap-2 w-full">`;
-    state.boothImages.forEach((url, idx) => {
-      html += `<img src="${url}=s300" data-lightbox-index="${idx}" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-95 transition-all border border-market-100" alt="攤位照 ${idx+1}">`;
-    });
-    html += `</div>`;
-    containerEl.innerHTML = html;
-  }
-
-  function closeBoothModal() {
-    const modal = document.getElementById('booth-modal');
-    const modalContent = document.getElementById('modal-content');
-    modal.classList.add('opacity-0');
-    modalContent.classList.remove('scale-100');
-    modalContent.classList.add('scale-95');
-    setTimeout(() => { modal.classList.add('hidden'); }, 300);
-  }
-
-  // 攤位宣傳連結
-  function renderBoothLinks(promoLinks, containerEl) {
-    if (!containerEl) return;
-    containerEl.innerHTML = '';
-
-    let links = promoLinks;
-    if (typeof links === 'string') {
-      try { links = JSON.parse(links); } catch (e) { links = []; }
-    }
-
-    if (!Array.isArray(links) || links.length === 0) {
-      containerEl.innerHTML = '<div class="text-xs text-gray-400 text-center py-1">暫無相關連結</div>';
-      return;
-    }
-
-    links.forEach(link => {
-      if (!link || typeof link !== 'object') return;
-      const platform = getPromoLinkPlatform(link.type);
-      const url = String(link.url || '').trim();
-      if (!url) return;
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.setAttribute('aria-label', `造訪${platform.label}`);
-      a.title = `造訪${platform.label}`;
-
-      if (platform.logoUrl) {
-        a.className = 'inline-flex w-10 h-10 items-center justify-center rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors';
-        const logo = document.createElement('img');
-        logo.src = platform.logoUrl;
-        logo.alt = platform.label;
-        logo.width = 28;
-        logo.height = 28;
-        logo.className = 'w-7 h-7 object-contain';
-        logo.addEventListener('error', () => {
-          a.textContent = platform.label;
-          a.className = 'inline-flex items-center justify-center rounded-xl bg-white border border-gray-200 text-xs font-bold px-3 py-2 shadow-sm hover:bg-gray-50 transition-colors';
-        }, { once: true });
-        a.appendChild(logo);
-      } else {
-        a.className = 'inline-flex w-10 h-10 items-center justify-center rounded-xl bg-white border border-gray-200 text-market-700 shadow-sm hover:bg-gray-50 transition-colors';
-        a.innerHTML = '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
-      }
-      containerEl.appendChild(a);
-    });
-  }
-
-  function getPromoLinkPlatform(type) {
-    const value = String(type || '').trim().toLowerCase();
-    if (value.includes('fb') || value.includes('facebook')) {
-      return { label: 'Facebook', logoUrl: 'https://cdn.simpleicons.org/facebook/0866FF' };
-    }
-    if (value === 'ig' || value.includes('instagram')) {
-      return { label: 'Instagram', logoUrl: 'https://cdn.simpleicons.org/instagram/E4405F' };
-    }
-    if (value.includes('thread')) {
-      return { label: 'Threads', logoUrl: 'https://cdn.simpleicons.org/threads/000000' };
-    }
-    return { label: '官方網站', logoUrl: '' };
-  }
-
   // 初始化靜態事件並啟動首屏資料載入與背景輪詢。
   function init() {
     const searchInput = document.getElementById('search-input');
     const categoryContainer = document.getElementById('category-chips');
-    const modalCloseButton = document.getElementById('modal-close-btn');
-    const previousBoothButton = document.getElementById('modal-prev-btn');
-    const nextBoothButton = document.getElementById('modal-next-btn');
-    const imageContainer = document.getElementById('modal-img-container');
 
     if (searchInput) searchInput.addEventListener('input', handleFilter);
-    if (previousBoothButton) previousBoothButton.addEventListener('click', () => navigateBooth(-1));
-    if (nextBoothButton) nextBoothButton.addEventListener('click', () => navigateBooth(1));
     if (categoryContainer) {
       categoryContainer.addEventListener('click', event => {
         const button = event.target.closest('[data-category]');
         if (button && categoryContainer.contains(button)) selectCategory(button.dataset.category);
-      });
-    }
-    if (modalCloseButton) modalCloseButton.addEventListener('click', closeBoothModal);
-    if (imageContainer) {
-      imageContainer.addEventListener('click', event => {
-        const thumbnail = event.target.closest('[data-lightbox-index]');
-        if (!thumbnail || !imageContainer.contains(thumbnail)) return;
-        BoothLightbox.open(state.boothImages, Number(thumbnail.dataset.lightboxIndex));
       });
     }
 
