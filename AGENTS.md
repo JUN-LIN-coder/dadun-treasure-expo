@@ -2,7 +2,7 @@
 
 ## 專案概況
 - 本專案是大墩珍寶展的 Google Apps Script V8 網頁應用程式，介面使用繁體中文，並以 GitHub Pages 提供正式靜態頁面。
-- `Code.js` 包含 GAS 網頁入口與 JSON API；`Config.js` 定義共用設定；`Service.js` 讀取並快取攤位資料；`index.html` 是 GAS 預覽與 GitHub Pages 共用的自包含頁面。`Stylesheet.html`、`JavaScript.html`、`ComponentModal.html`、`Lightbox.html` 為打包前的片段來源，修改後需同步更新 `index.html`。
+- `Code.js` 包含 GAS 網頁入口與 JSON API；`Config.js` 定義共用設定；`Service.js` 讀取並快取攤位資料；`index.html` 是 GAS 與 GitHub Pages 共用的唯一自包含前端頁面。前端 HTML、CSS 與 JavaScript 都直接在 `index.html` 維護，不使用分離的片段來源。
 - `.github/workflows/sync-data.yml` 定時呼叫 GAS JSON API，驗證並更新根目錄 `data.json`。
 - `appsscript.json` 設定 Apps Script 執行環境與網頁應用程式的存取方式。
 
