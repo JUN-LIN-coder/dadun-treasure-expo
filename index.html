@@ -386,7 +386,7 @@
       onDataError(new Error('攤位資料格式不正確'));
       return;
     }
-    state.rawBoothsList = safeData.booths;
+    state.rawBoothsList = sortSpecialBoothsFirst(safeData.booths);
     renderSiteAssets(safeData.site);
 
     renderCategoryChips();
@@ -461,7 +461,10 @@
     const keyword = inputEl ? inputEl.value.toLowerCase().trim() : '';
     const filtered = state.rawBoothsList.filter(b => {
       const matchKeyword = (b.title && b.title.toLowerCase().includes(keyword)) || 
-                           (b.booths && b.booths.some(num => num.includes(keyword) || String(parseInt(num, 10)).includes(keyword)));
+                           (b.booths && b.booths.some(num => {
+                             const number = normalizeBoothNumber(num);
+                             return number.includes(keyword) || (!number.includes('★') && String(parseInt(number, 10)).includes(keyword));
+                           }));
       const matchCategory = state.selectedCategory === 'ALL' || (b.categories && b.categories.includes(state.selectedCategory));
       return matchKeyword && matchCategory;
     });
@@ -526,7 +529,7 @@
       (Array.isArray(booth.booths) ? booth.booths : []).forEach(number => {
         const badge = document.createElement('span');
         badge.className = 'text-xs font-bold text-[#5c523d] bg-[#eee9dc] px-2.5 py-1.5 rounded-lg whitespace-nowrap';
-        badge.textContent = `#${parseInt(number, 10)}`;
+        badge.textContent = formatBoothNumber(number);
         boothNumbers.appendChild(badge);
       });
       const topRow = document.createElement('div');
@@ -600,8 +603,32 @@
 
   function formatBoothNumbers(booth) {
     return (Array.isArray(booth.booths) ? booth.booths : [])
-      .map(number => `#${parseInt(number, 10)}`)
+      .map(formatBoothNumber)
       .join(', ');
+  }
+
+  function normalizeBoothNumber(value) {
+    const number = String(value == null ? '' : value).trim();
+    return number.includes('★') ? '★' : number.padStart(3, '0');
+  }
+
+  function formatBoothNumber(value) {
+    const number = normalizeBoothNumber(value);
+    return number === '★' ? '★' : `#${parseInt(number, 10)}`;
+  }
+
+  function sortSpecialBoothsFirst(booths) {
+    const special = [];
+    const regular = [];
+    booths.forEach(booth => {
+      const normalizedBooth = {
+        ...booth,
+        booths: Array.isArray(booth.booths) ? booth.booths.map(normalizeBoothNumber) : []
+      };
+      if (normalizedBooth.booths.includes('★')) special.push(normalizedBooth);
+      else regular.push(normalizedBooth);
+    });
+    return special.concat(regular);
   }
 
   function renderModalImages() {
