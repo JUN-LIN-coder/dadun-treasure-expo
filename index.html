@@ -69,6 +69,17 @@
   .section-anchor {
     scroll-margin-top: 6rem;
   }
+  @media (max-width: 767px) {
+    .theme-topic-label,
+    .theme-topic-title {
+      display: block;
+    }
+    .theme-topic-title {
+      white-space: nowrap;
+      font-size: clamp(.75rem, 3.8vw, .875rem);
+      letter-spacing: -.02em;
+    }
+  }
   .booth-card {
     cursor: pointer;
     transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
@@ -205,7 +216,7 @@
                         <div><dt class="inline font-medium text-gray-500">多元寶物：</dt><dd class="inline">珠寶 x 礦物 x 寶石 x 化石</dd></div>
                         <div><dt class="inline font-medium text-gray-500">拍賣環節：</dt><dd class="inline">驚喜起標，遇見屬於你的專屬寶物</dd></div>
                         <div><dt class="inline font-medium text-gray-500">拍賣時間：</dt><dd class="inline">10:30、14:30</dd></div>
-                        <div><dt class="inline font-medium text-gray-500">主題內容：</dt><dd class="inline">《寶石世界的秘密花園—祖母綠微觀世界影像誌》</dd></div>
+                        <div><dt class="theme-topic-label inline font-medium text-gray-500">主題內容：</dt><dd class="theme-topic-title inline">《寶石世界的秘密花園—祖母綠微觀世界影像誌》</dd></div>
                     </dl>
                     <div class="mt-3 text-sm text-gray-700">
                         <h3 class="font-medium text-gray-500 mb-1">參觀注意事項</h3>
